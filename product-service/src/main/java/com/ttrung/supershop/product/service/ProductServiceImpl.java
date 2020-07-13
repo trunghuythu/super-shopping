@@ -8,14 +8,17 @@ package com.ttrung.supershop.product.service;
 
 import com.ttrung.supershop.product.domain.Product;
 import com.ttrung.supershop.product.dto.ProductDto;
+import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.mapper.ProductMapper;
 import com.ttrung.supershop.product.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -27,24 +30,35 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public Optional<ProductDto> getProductById(String id) {
-        Optional<Product> productContainer = productRepository.findById(id);
-        return productContainer.map(productMapper::domainToDto);
+    public Optional<ProductDto> getProductById(String productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        return product.map(productMapper::domainToDto);
     }
 
     @Override
     public ProductDto createProduct(ProductDto productForm) {
         String productId = UUID.randomUUID().toString();
         productForm.setId(productId);
-        Product product = productMapper.dtoToDomain(productForm);
-        productRepository.save(product);
-
-        Optional<Product> createdProduct = productRepository.findById(productId);
-        return createdProduct.map(productMapper::domainToDto).get();
+        Product createdProduct = productRepository.save(productMapper.dtoToDomain(productForm));
+        return productMapper.domainToDto(createdProduct);
     }
 
     @Override
-    public ProductDto updateProduct(ProductDto productForm) {
-        return null;
+    public ProductDto updateProduct(String productId, ProductDto productForm) {
+        if (!productRepository.existsById(productId)) {
+            throw new ProductNotFoundException(String.format("The product specified by id [%s] does not exist", productId));
+        } else {
+            productForm.setId(productId);
+            Product updatedProduct = productRepository.save(productMapper.dtoToDomain(productForm));
+            return productMapper.domainToDto(updatedProduct);
+        }
+    }
+
+    @Override
+    public List<ProductDto> getProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(productMapper::domainToDto)
+                .collect(Collectors.toList());
     }
 }

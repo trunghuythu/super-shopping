@@ -1,8 +1,8 @@
 package com.ttrung.supershop.product.service;
 
-import com.ttrung.supershop.product.domain.Product;
 import com.ttrung.supershop.product.dto.ProductDto;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,9 +13,11 @@ import java.util.Optional;
  */
 public interface ProductService {
 
-    Optional<ProductDto> getProductById(String id);
+    Optional<ProductDto> getProductById(String productId);
 
     ProductDto createProduct(ProductDto productForm);
 
-    ProductDto updateProduct(ProductDto productForm);
+    ProductDto updateProduct(String productId, ProductDto productForm);
+
+    List<ProductDto> getProducts();
 }

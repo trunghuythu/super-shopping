@@ -7,6 +7,7 @@
 package com.ttrung.supershop.product.controller;
 
 import com.ttrung.supershop.product.dto.ProductDto;
+import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -33,18 +34,14 @@ public class ProductController {
 
     @GetMapping("/v1/products")
     public ResponseEntity<List<ProductDto>> getProducts() {
-        ProductDto productDto = new ProductDto();
-        productDto.setId(UUID.randomUUID().toString());
-        productDto.setName("Super Yogurt");
-        productDto.setCategory("Food");
-        productDto.setPrice(3.2D);
+        List<ProductDto> products = productService.getProducts();
 
-        return ResponseEntity.ok(Collections.singletonList(productDto));
+        return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/v1/products/{id}")
-    public ResponseEntity<ProductDto> getProduct(@PathVariable String id) {
-        Optional<ProductDto> productContainer = productService.getProductById(id);
+    @GetMapping("/v1/products/{productId}")
+    public ResponseEntity<ProductDto> getProduct(@PathVariable String productId) {
+        Optional<ProductDto> productContainer = productService.getProductById(productId);
 
         return productContainer.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -56,9 +53,13 @@ public class ProductController {
         return ResponseEntity.ok(createdProduct);
     }
 
-    @PutMapping("/v1/products/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @Valid @RequestBody ProductDto productForm) {
-        ProductDto createdProduct = productService.updateProduct(productForm);
-        return ResponseEntity.ok(createdProduct);
+    @PutMapping("/v1/products/{productId}")
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable String productId, @Valid @RequestBody ProductDto productForm) {
+        try {
+            ProductDto createdProduct = productService.updateProduct(productId, productForm);
+            return ResponseEntity.ok(createdProduct);
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

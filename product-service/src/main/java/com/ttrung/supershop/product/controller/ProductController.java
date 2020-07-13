@@ -4,7 +4,7 @@
  * electronic, mechanical or otherwise, is prohibited without the prior written
  * consent of the copyright owner.
  */
-package com.ttrung.supershop.product.endpoint;
+package com.ttrung.supershop.product.controller;
 
 import com.ttrung.supershop.product.dto.ProductDto;
 import com.ttrung.supershop.product.service.ProductService;
@@ -26,7 +26,7 @@ import java.util.UUID;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
-public class ProductEndpoint {
+public class ProductController {
 
     @Autowired
     private ProductService productService;

@@ -6,6 +6,4 @@ server:
 spring:
   data:
     mongodb:
-      database: SuperShopping
-      host: 127.0.0.1
-      port: 27017
+      uri: mongodb://127.0.0.1:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000

@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -64,7 +66,7 @@ public class ProductController {
     }
 
     @PostMapping("/v1/products/price-calculation")
-    public ResponseEntity<PriceCalculationResult> calculateTotalPrice(@RequestBody List<ProductOrderDto> productOrders) {
+    public ResponseEntity<PriceCalculationResult> calculateTotalPrice(@RequestBody Collection<ProductOrderDto> productOrders) {
         return ResponseEntity.ok(productService.calculateTotalPrice(productOrders));
     }
 }

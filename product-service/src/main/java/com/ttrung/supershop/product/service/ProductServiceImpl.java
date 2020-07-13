@@ -17,6 +17,7 @@ import com.ttrung.supershop.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PriceCalculationResult calculateTotalPrice(List<ProductOrderDto> productOrders) {
+    public PriceCalculationResult calculateTotalPrice(Collection<ProductOrderDto> productOrders) {
         //TODO : Use Mongo aggregation to calculate the total price instead.
         Set<String> productIds = productOrders.stream()
                 .map(ProductOrderDto::getProductId)

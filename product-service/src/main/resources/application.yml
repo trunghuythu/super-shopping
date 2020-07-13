@@ -1,0 +1,11 @@
+server:
+  servlet:
+    contextPath: /
+  port: 8125
+
+spring:
+  data:
+    mongodb:
+      database: SuperShopping
+      host: 127.0.0.1
+      port: 27017

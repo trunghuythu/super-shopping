@@ -13,6 +13,4 @@ import java.util.Optional;
  * consent of the copyright owner.
  */
 public interface ProductRepository extends MongoRepository<Product, String> {
-
-    Optional<Product> findById(String id);
 }

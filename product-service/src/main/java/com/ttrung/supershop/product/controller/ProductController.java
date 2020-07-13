@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -51,13 +53,13 @@ public class ProductController {
     }
 
     @PostMapping("/v1/products")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productForm) {
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productForm) {
         ProductDto createdProduct = productService.createProduct(productForm);
         return ResponseEntity.ok(createdProduct);
     }
 
     @PutMapping("/v1/products/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @RequestBody ProductDto productForm) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id,@Valid @RequestBody ProductDto productForm) {
         ProductDto createdProduct = productService.updateProduct(productForm);
         return ResponseEntity.ok(createdProduct);
     }

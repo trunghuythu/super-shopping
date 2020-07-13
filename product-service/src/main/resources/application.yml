@@ -1,9 +1,9 @@
 server:
   servlet:
     contextPath: /
-  port: 8125
+  port: 8080
 
 spring:
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000
+      uri: mongodb://mongo-db:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000

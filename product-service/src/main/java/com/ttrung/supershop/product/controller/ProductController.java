@@ -25,8 +25,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 @RestController
 public class ProductController {
 
@@ -49,7 +47,7 @@ public class ProductController {
         Optional<ProductDto> productContainer = productService.getProductById(id);
 
         return productContainer.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(NOT_FOUND).body(null));
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/v1/products")
@@ -59,7 +57,7 @@ public class ProductController {
     }
 
     @PutMapping("/v1/products/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id,@Valid @RequestBody ProductDto productForm) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @Valid @RequestBody ProductDto productForm) {
         ProductDto createdProduct = productService.updateProduct(productForm);
         return ResponseEntity.ok(createdProduct);
     }

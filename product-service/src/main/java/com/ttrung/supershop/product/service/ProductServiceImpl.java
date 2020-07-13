@@ -7,7 +7,9 @@
 package com.ttrung.supershop.product.service;
 
 import com.ttrung.supershop.product.domain.Product;
+import com.ttrung.supershop.product.dto.PriceCalculationResult;
 import com.ttrung.supershop.product.dto.ProductDto;
+import com.ttrung.supershop.product.dto.ProductOrderDto;
 import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.mapper.ProductMapper;
 import com.ttrung.supershop.product.repository.ProductRepository;
@@ -17,8 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -60,5 +64,18 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(productMapper::domainToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PriceCalculationResult calculateTotalPrice(List<ProductOrderDto> productOrders) {
+        //TODO : Use Mongo aggregation to calculate the total price instead.
+        Set<String> productIds = productOrders.stream()
+                .map(ProductOrderDto::getProductId)
+                .collect(Collectors.toSet());
+
+        Stream<Product> products = productRepository.findByIdIn(productIds);
+
+        double totalPrice = products.mapToDouble(Product::getPrice).sum();
+        return new PriceCalculationResult(totalPrice);
     }
 }

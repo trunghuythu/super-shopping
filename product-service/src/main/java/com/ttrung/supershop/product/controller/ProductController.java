@@ -6,7 +6,9 @@
  */
 package com.ttrung.supershop.product.controller;
 
+import com.ttrung.supershop.product.dto.PriceCalculationResult;
 import com.ttrung.supershop.product.dto.ProductDto;
+import com.ttrung.supershop.product.dto.ProductOrderDto;
 import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.service.ProductService;
 
@@ -21,8 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -61,5 +61,10 @@ public class ProductController {
         } catch (ProductNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/v1/products/price-calculation")
+    public ResponseEntity<PriceCalculationResult> calculateTotalPrice(@RequestBody List<ProductOrderDto> productOrders) {
+        return ResponseEntity.ok(productService.calculateTotalPrice(productOrders));
     }
 }

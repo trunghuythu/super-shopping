@@ -1,6 +1,10 @@
 package com.ttrung.supershop.product.service;
 
+import com.ttrung.supershop.product.dto.PriceCalculationResult;
 import com.ttrung.supershop.product.dto.ProductDto;
+import com.ttrung.supershop.product.dto.ProductOrderDto;
+
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +24,6 @@ public interface ProductService {
     ProductDto updateProduct(String productId, ProductDto productForm);
 
     List<ProductDto> getProducts();
+
+    PriceCalculationResult calculateTotalPrice(List<ProductOrderDto> productOrders);
 }

@@ -4,7 +4,7 @@ services:
     image: product-service:1.0.0
     build: ./product-service
     ports:
-      - 8125:8080
+      - 8125:8125
     command: mvn clean spring-boot:run
     depends_on:
       - mongo-db
@@ -12,7 +12,7 @@ services:
     image: order-service:1.0.0
     build: ./order-service
     ports:
-      - 8126:8080
+      - 8126:8126
     command: mvn clean spring-boot:run
     depends_on:
       - mongo-db

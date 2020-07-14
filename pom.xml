@@ -96,6 +96,7 @@
         <module>product-service-client</module>
         <module>order-service</module>
         <module>product-service</module>
+        <module>urp-service</module>
     </modules>
 
 </project>

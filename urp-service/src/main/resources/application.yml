@@ -1,0 +1,27 @@
+server:
+  servlet:
+    contextPath: /
+  port: 8127
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 1110034809368387
+            client-secret: de0d00da01a0e09188593389c51cd198
+            scope:
+              - email
+              - public_profile
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000
+
+security:
+  jwt:
+    header: Authorization
+    prefix: Bearer
+    expiration: 86400
+    secret: JwtSecretKey

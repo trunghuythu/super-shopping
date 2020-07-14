@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -43,9 +42,9 @@ public class ProductController {
 
     @GetMapping("/v1/products/{productId}")
     public ResponseEntity<ProductDto> getProduct(@PathVariable String productId) {
-        Optional<ProductDto> productContainer = productService.getProductById(productId);
+        Optional<ProductDto> product = productService.getProductById(productId);
 
-        return productContainer.map(ResponseEntity::ok)
+        return product.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 

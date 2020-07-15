@@ -13,16 +13,17 @@ import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -33,13 +34,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/v1/products")
-    public ResponseEntity<List<ProductDto>> getProducts() {
-        List<ProductDto> products = productService.getProducts();
+    public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam("$filter") String filter, @RequestParam("$sort") String sort, @RequestParam("$page") int page, @RequestParam("$size") int size) {
+        Page<ProductDto> products = productService.getProducts(filter, sort, page, size);
 
         return ResponseEntity.ok(products);
     }
 
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/v1/products/{productId}")
     public ResponseEntity<ProductDto> getProduct(@PathVariable String productId) {
         Optional<ProductDto> product = productService.getProductById(productId);

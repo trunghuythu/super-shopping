@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * electronic, mechanical or otherwise, is prohibited without the prior written
  * consent of the copyright owner.
  */
-public interface ProductRepository extends MongoRepository<Product, String> {
+public interface ProductRepository extends ProductCustomRepository, MongoRepository<Product, String> {
 
     Stream<Product> findByIdIn(Set<String> productIds);
 }

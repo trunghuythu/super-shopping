@@ -4,6 +4,7 @@ import com.ttrung.supershop.product.dto.PriceCalculationResult;
 import com.ttrung.supershop.product.dto.ProductDto;
 import com.ttrung.supershop.product.dto.ProductOrderDto;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
@@ -24,7 +25,7 @@ public interface ProductService {
 
     ProductDto updateProduct(String productId, ProductDto productForm);
 
-    List<ProductDto> getProducts();
+    Page<ProductDto> getProducts(String searchTerm, String sort, int page, int size);
 
     PriceCalculationResult calculateTotalPrice(Collection<ProductOrderDto> productOrders);
 }

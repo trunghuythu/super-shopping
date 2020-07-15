@@ -15,6 +15,8 @@ import com.ttrung.supershop.product.mapper.ProductMapper;
 import com.ttrung.supershop.product.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -60,16 +62,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
+    public Page<ProductDto> getProducts(String searchTerm, String sort, int page, int size) {
+        String[] sortSpec = sort.split(",");
+        String sortBy = sortSpec[0].trim();
+        String sortDirection = sortSpec[1].trim();
+
+        Page<Product> pagedResult = productRepository.findProducts(searchTerm, sortBy, sortDirection, page, size);
+        List<ProductDto> products = pagedResult.get()
                 .map(productMapper::domainToDto)
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(products, pagedResult.getPageable(), pagedResult.getTotalElements());
     }
 
     @Override
     public PriceCalculationResult calculateTotalPrice(Collection<ProductOrderDto> productOrders) {
-        //TODO : Use Mongo aggregation to calculate the total price instead.
+        //TODO : Use Mongo aggregation to calculate the total price to utilize mongo aggregation power
         Set<String> productIds = productOrders.stream()
                 .map(ProductOrderDto::getProductId)
                 .collect(Collectors.toSet());

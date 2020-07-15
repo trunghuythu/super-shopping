@@ -34,15 +34,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/v1/products")
-    public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam("$filter") String filter, @RequestParam("$sort") String sort, @RequestParam("$page") int page, @RequestParam("$size") int size) {
+    public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam("$filter") String filter,
+                                                        @RequestParam("$sort") String sort,
+                                                        @RequestParam("$page") int page,
+                                                        @RequestParam("$size") int size) {
         Page<ProductDto> products = productService.getProducts(filter, sort, page, size);
 
         return ResponseEntity.ok(products);
     }
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/v1/products/{productId}")
     public ResponseEntity<ProductDto> getProduct(@PathVariable String productId) {
         Optional<ProductDto> product = productService.getProductById(productId);
@@ -51,12 +52,14 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //TODO: @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/v1/products")
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productForm) {
         ProductDto createdProduct = productService.createProduct(productForm);
         return ResponseEntity.ok(createdProduct);
     }
 
+    //TODO: @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/v1/products/{productId}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable String productId, @Valid @RequestBody ProductDto productForm) {
         try {

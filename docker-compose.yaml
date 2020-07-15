@@ -7,7 +7,7 @@ services:
       - 8125
     command: mvn spring-boot:run
     environment:
-      - TOKEN_CHECK_ENDPOINT: "http://urp-service:8127/oauth/token"
+      - TOKEN_CHECK_ENDPOINT=http://urp-service:8127/oauth/check_token
     depends_on:
       - mongo-db
   order-service:
@@ -17,34 +17,35 @@ services:
       - 8126
     command: mvn spring-boot:run
     environment:
-      - PRODUCT_SERVICE_BASE_URL: http://product-service:8125/
+      - PRODUCT_SERVICE_BASE_URL=http://product-service:8125/
+      - TOKEN_CHECK_ENDPOINT=http://urp-service:8127/oauth/check_token
     depends_on:
       - mongo-db
       - product-service
-#  urp-service:
-#    image: urp-service:1.0.0
-#    build: ./urp-service
-#    ports:
-#      - 8127:8127
-#    command: mvn spring-boot:run
-#    depends_on:
-#      - mongo-db
-#  mongo-db:
-#    image: mongo:3.6
-#    environment:
-#      - MONGO_DATA_DIR=/data/db
-#      - MONGO_LOG_DIR=/dev/null
-#    ports:
-#      - 27017:27017
-#  nginx:
-#    image: nginx:1.19.1
-#    container_name: reverse-proxy
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/nginx.conf
-#    ports:
-#      - 8888:80
-#      - 9999:443
-#    depends_on:
-#      - urp-service
-#      - product-service
-#      - order-service
+  urp-service:
+    image: urp-service:1.0.0
+    build: ./urp-service
+    ports:
+      - 8127:8127
+    command: mvn spring-boot:run
+    depends_on:
+      - mongo-db
+  mongo-db:
+    image: mongo:4.2
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+      - 27017:27017
+  nginx:
+    image: nginx:1.19.1
+    container_name: reverse-proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8888:80
+      - 9999:443
+    depends_on:
+      - urp-service
+      - product-service
+      - order-service

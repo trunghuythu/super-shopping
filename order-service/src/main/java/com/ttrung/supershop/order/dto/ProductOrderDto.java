@@ -14,5 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class ProductOrderDto {
     @NotBlank
     private String productId;
+    @Min(1)
     private int quantity;
 }

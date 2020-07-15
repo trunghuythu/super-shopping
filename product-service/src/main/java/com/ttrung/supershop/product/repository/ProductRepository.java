@@ -4,9 +4,8 @@ import com.ttrung.supershop.product.domain.Product;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Copyright (c) 2020 Absolute Software Corporation. All rights reserved.
@@ -16,5 +15,5 @@ import java.util.stream.Stream;
  */
 public interface ProductRepository extends ProductCustomRepository, MongoRepository<Product, String> {
 
-    Stream<Product> findByIdIn(Set<String> productIds);
+    List<Product> findByIdIn(Set<String> productIds);
 }

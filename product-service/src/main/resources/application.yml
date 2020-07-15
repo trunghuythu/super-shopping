@@ -6,12 +6,4 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000
-
-logging:
-  level:
-    org:
-      springframework:
-        data:
-          mongodb:
-            core: DEBUG
+      uri: mongodb://mongo-db:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000

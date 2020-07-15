@@ -26,9 +26,6 @@ public class OrderDto {
     private String id;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String userId;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OrderStatus status;
 
     @NotEmpty
@@ -38,6 +35,5 @@ public class OrderDto {
     @NotBlank
     private String deliveryAddress;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double totalPrice;
 }

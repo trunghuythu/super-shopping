@@ -8,8 +8,6 @@ public interface ShoppingCartService {
 
     ShoppingCartDto updateCart(String userId, ShoppingCartDto cartForm);
 
-    boolean createCart(String userId);
-
     Optional<ShoppingCartDto> getCart(String userId);
 
     void clearCart(String userId);

@@ -18,13 +18,3 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000
-
-security:
-  oauth2:
-    client:
-      client-id: supershop
-      client-secret: supershop
-      grant-type: client_credentials
-      authorized-grant-types: client_credentials
-      scope: any
-      access-token-validity-seconds: 360

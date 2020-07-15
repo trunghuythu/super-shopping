@@ -3,9 +3,6 @@ package com.ttrung.supershop.urp.model;
 import lombok.AllArgsConstructor;
 
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 @lombok.Getter
 @lombok.Setter
 @AllArgsConstructor

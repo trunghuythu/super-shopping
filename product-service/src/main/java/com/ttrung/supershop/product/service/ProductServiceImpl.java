@@ -25,16 +25,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
     private ProductMapper productMapper;
+
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.productMapper = productMapper;
+    }
 
     @Override
     public Optional<ProductDto> getProductById(String productId) {
@@ -82,9 +83,10 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductOrderDto::getProductId)
                 .collect(Collectors.toSet());
 
-        Stream<Product> products = productRepository.findByIdIn(productIds);
-
-        double totalPrice = products.mapToDouble(Product::getPrice).sum();
+        List<Product> products = productRepository.findByIdIn(productIds);
+        double totalPrice = products
+                .stream()
+                .mapToDouble(Product::getPrice).sum();
         return new PriceCalculationResult(totalPrice);
     }
 }

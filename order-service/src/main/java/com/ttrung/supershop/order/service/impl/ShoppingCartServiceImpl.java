@@ -12,7 +12,6 @@ import com.ttrung.supershop.order.mapper.ShoppingCartMapper;
 import com.ttrung.supershop.order.repository.ShoppingCartRepository;
 import com.ttrung.supershop.order.service.ShoppingCartService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,30 +19,21 @@ import java.util.Optional;
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    @Autowired
     private ShoppingCartRepository cartRepository;
-
-    @Autowired
     private ShoppingCartMapper cartMapper;
 
-    @Override
-    public ShoppingCartDto updateCart(String userId, ShoppingCartDto cartForm) {
-        cartForm.setId(userId);
-        ShoppingCart updatedCart = cartRepository.save(cartMapper.dtoToDomain(cartForm));
-
-        return cartMapper.domainToDto(updatedCart);
+    public ShoppingCartServiceImpl(ShoppingCartRepository cartRepository, ShoppingCartMapper cartMapper) {
+        this.cartRepository = cartRepository;
+        this.cartMapper = cartMapper;
     }
 
     @Override
-    public boolean createCart(String userId) {
-        if (cartRepository.existsById(userId)) {
-            return false;
-        } else {
-            ShoppingCart shoppingCart = new ShoppingCart();
-            shoppingCart.setId(userId);
-            cartRepository.save(shoppingCart);
-            return true;
-        }
+    public ShoppingCartDto updateCart(String userId, ShoppingCartDto cartForm) {
+        ShoppingCart cart = cartMapper.dtoToDomain(cartForm);
+        cart.setId(userId);
+        ShoppingCart updatedCart = cartRepository.save(cart);
+
+        return cartMapper.domainToDto(updatedCart);
     }
 
     @Override

@@ -1,5 +1,10 @@
+/**
+ * Copyright (c) 2020 Absolute Software Corporation. All rights reserved.
+ * Reproduction or transmission in whole or in part, in any form or by any means,
+ * electronic, mechanical or otherwise, is prohibited without the prior written
+ * consent of the copyright owner.
+ */
 package com.ttrung.supershop.urp.config;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/signin").authenticated()
-                .antMatchers("/api/*").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .oauth2Login();
@@ -33,7 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // Configure DB authentication provider for user accounts
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 

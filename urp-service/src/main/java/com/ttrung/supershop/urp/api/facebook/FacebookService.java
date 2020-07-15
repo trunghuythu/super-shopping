@@ -1,7 +1,7 @@
 package com.ttrung.supershop.urp.api.facebook;
 
 import com.ttrung.supershop.urp.api.ApiBinding;
-import com.ttrung.supershop.urp.dto.Profile;
+import com.ttrung.supershop.urp.dto.UserProfile;
 
 public class FacebookService extends ApiBinding {
 
@@ -11,7 +11,7 @@ public class FacebookService extends ApiBinding {
         super(accessToken);
     }
 
-    public Profile getProfile() {
-        return restTemplate.getForObject(GRAPH_API_BASE_URL + "/me?fields=id,name,email", Profile.class);
+    public UserProfile getProfile() {
+        return restTemplate.getForObject(GRAPH_API_BASE_URL + "/me?fields=id,name,email", UserProfile.class);
     }
 }

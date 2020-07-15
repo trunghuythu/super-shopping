@@ -18,11 +18,11 @@ import com.ttrung.supershop.order.service.ShoppingCartService;
 import com.ttrung.supershop.product.client.ProductService;
 import com.ttrung.supershop.product.dto.PriceCalculationResult;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import okhttp3.ResponseBody;
@@ -32,38 +32,32 @@ import retrofit2.Response;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private OrderMapper orderMapper;
-
-    @Autowired
     private ShoppingCartService shoppingCartService;
-
-    @Autowired
     private ProductService productService;
+
+    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingCartService shoppingCartService, ProductService productService) {
+        this.orderRepository = orderRepository;
+        this.orderMapper = orderMapper;
+        this.shoppingCartService = shoppingCartService;
+        this.productService = productService;
+    }
 
     @Override
     public OrderDto createOrder(String userId, OrderDto orderForm) {
+        //TODO : Probably need to verify product existence, and other business logic, like if there is enough products in store.
         Order order = orderMapper.dtoToDomain(orderForm);
+        order.setId(UUID.randomUUID().toString());
+        order.setUserId(userId);
         order.setStatus(OrderStatus.NEW);
         order.setTotalPrice(calculateOrderPrice(orderForm.getProductOrders()));
-        Order createdOrder = orderRepository.save(order);
 
+        //TODO : Consider using transaction around persisting order and clearing cart operations.
+        Order createdOrder = orderRepository.save(order);
         shoppingCartService.clearCart(userId);
 
         return orderMapper.domainToDto(createdOrder);
-    }
-
-    @Override
-    public boolean cancelOrder(String userId, String orderId) {
-        return orderRepository.cancelOrder(userId, orderId);
-    }
-
-    @Override
-    public OrderDto updateOrder(String userId, String orderId, OrderDto orderForm) {
-        return null;
     }
 
     private Double calculateOrderPrice(List<ProductOrderDto> productOrders) {

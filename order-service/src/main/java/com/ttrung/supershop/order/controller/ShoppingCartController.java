@@ -7,8 +7,8 @@
 package com.ttrung.supershop.order.controller;
 
 import com.ttrung.supershop.order.dto.ShoppingCartDto;
-import com.ttrung.supershop.order.exception.CartNotFoundException;
 import com.ttrung.supershop.order.service.ShoppingCartService;
+import com.ttrung.supershop.order.util.AuthenticationExtractor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +28,16 @@ public class ShoppingCartController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
-    @PutMapping("v1/shopping-carts/{userId}")
-    public ResponseEntity<ShoppingCartDto> updateCart(@PathVariable("userId") String userId,@Valid @RequestBody ShoppingCartDto cartForm) {
-        try {
-            ShoppingCartDto shoppingCartDto = shoppingCartService.updateCart(userId, cartForm);
-            return ResponseEntity.ok(shoppingCartDto);
-        } catch (CartNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-
+    @PutMapping("v1/shopping-carts")
+    public ResponseEntity<ShoppingCartDto> updateCart(@Valid @RequestBody ShoppingCartDto cartForm) {
+        String userId = AuthenticationExtractor.getAuthenticatedUser();
+        ShoppingCartDto shoppingCartDto = shoppingCartService.updateCart(userId, cartForm);
+        return ResponseEntity.ok(shoppingCartDto);
     }
 
-    @GetMapping("v1/shopping-carts/{userId}")
-    public ResponseEntity<ShoppingCartDto> getCart(@PathVariable("userId") String userId) {
+    @GetMapping("v1/shopping-carts")
+    public ResponseEntity<ShoppingCartDto> getCart() {
+        String userId = AuthenticationExtractor.getAuthenticatedUser();
         Optional<ShoppingCartDto> shoppingCart = shoppingCartService.getCart(userId);
         return shoppingCart.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

@@ -6,89 +6,91 @@
  */
 package com.ttrung.supershop.product;
 
-import com.ttrung.supershop.product.dto.ProductDto;
-import com.ttrung.supershop.product.service.ProductService;
+import com.ttrung.supershop.product.domain.Product;
+import com.ttrung.supershop.product.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
+/**
+ * For demo purpose, on app startup, we would insert sample products into DB.
+ */
 @Component
 public class ApplicationEventListener {
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     /**
      * Insert sample products on application startup.
      */
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
-        ProductDto yogurt = ProductDto.builder()
+        Product yogurt = Product.builder()
                 .id("57f7d3e0-f114-4a96-89fd-8084f35c9731")
                 .name("Strawberry Yogurt")
                 .brand("Vinamilk")
                 .price(5000d)
                 .build();
-        productService.createProduct(yogurt);
+        productRepository.save(yogurt);
 
-        ProductDto milk = ProductDto.builder()
+        Product milk = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-04d112403332")
                 .name("Dense milk")
                 .brand("Vinamilk")
                 .price(20000d)
                 .build();
-        productService.createProduct(milk);
+        productRepository.save(milk);
 
-        ProductDto xiaoMiNote5 = ProductDto.builder()
+        Product xiaoMiNote5 = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-04d112402d32")
                 .name("Xiaomi Note 5")
                 .brand("Xiaomi")
                 .price(2000000d)
                 .build();
-        productService.createProduct(xiaoMiNote5);
+        productRepository.save(xiaoMiNote5);
 
-        ProductDto xiaomiVisionX = ProductDto.builder()
+        Product xiaomiVisionX = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-03k112403332")
                 .name("Xiaomi Vision X")
                 .brand("Xiaomi")
                 .price(3000000d)
                 .build();
-        productService.createProduct(xiaomiVisionX);
+        productRepository.save(xiaomiVisionX);
 
-        ProductDto samsungNote8 = ProductDto.builder()
+        Product samsungNote8 = Product.builder()
                 .id("46bd8950-7494-4ed7-861c-04d112403332")
                 .name("Samsung Note 9")
                 .brand("Samsung")
                 .price(20000000d)
                 .build();
-        productService.createProduct(samsungNote8);
+        productRepository.save(samsungNote8);
 
-        ProductDto samsungGalaxy = ProductDto.builder()
+        Product samsungGalaxy = Product.builder()
                 .id("3ebd8950-7494-4ed7-726d-04d112403332")
                 .name("Samsung Galaxy")
                 .brand("Samsung")
                 .price(28000000d)
                 .build();
-        productService.createProduct(samsungGalaxy);
+        productRepository.save(samsungGalaxy);
 
-        ProductDto samsungTvUhd = ProductDto.builder()
+        Product samsungTvUhd = Product.builder()
                 .id("3kjs8950-7494-4ed7-861c-04d112403332")
                 .name("Samsung TV Uhd")
                 .brand("Samsung")
                 .price(10000000d)
                 .build();
-        productService.createProduct(samsungTvUhd);
+        productRepository.save(samsungTvUhd);
 
-        ProductDto samsungTv4k = ProductDto.builder()
+        Product samsungTv4k = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-26k112293332")
                 .name("Samsung TV 4k")
                 .brand("Samsung")
                 .price(15000000d)
                 .build();
-        productService.createProduct(samsungTv4k);
+        productRepository.save(samsungTv4k);
     }
 }

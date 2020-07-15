@@ -23,6 +23,11 @@ public class CustomUserDetails extends User implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return getId();
+    }
+
+    @Override
     public String getPassword() {
         //Currently, we don't support password yet, only Facebook login is supported
         return "not-yet-supported";

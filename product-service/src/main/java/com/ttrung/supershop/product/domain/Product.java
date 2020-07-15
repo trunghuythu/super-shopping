@@ -10,9 +10,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 @Document
 @lombok.Getter
 @lombok.Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     public static final String NAME_FIELD = "name";

@@ -6,8 +6,6 @@
  */
 package com.ttrung.supershop.order.dto;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -15,9 +13,6 @@ import javax.validation.Valid;
 @lombok.Getter
 @lombok.Setter
 public class ShoppingCartDto {
-    @Id
-    private String id;
-
     @Valid
     private Set<ProductOrderDto> productOrders;
 }

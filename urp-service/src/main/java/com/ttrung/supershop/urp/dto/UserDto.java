@@ -4,7 +4,7 @@
  * electronic, mechanical or otherwise, is prohibited without the prior written
  * consent of the copyright owner.
  */
-package com.ttrung.supershop.urp.utils;
+package com.ttrung.supershop.urp.dto;
 
-public class OAuthTokenExtractor {
+public class UserDto {
 }

@@ -1,8 +1,7 @@
 package com.ttrung.supershop.urp.service;
 
-import com.ttrung.supershop.urp.dto.Profile;
+import com.ttrung.supershop.urp.dto.UserProfile;
 import com.ttrung.supershop.urp.exception.DuplicateEmailException;
-import com.ttrung.supershop.urp.exception.SignInException;
 import com.ttrung.supershop.urp.model.CustomUserDetails;
 import com.ttrung.supershop.urp.model.Role;
 import com.ttrung.supershop.urp.model.User;
@@ -18,7 +17,6 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,21 +43,27 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public OAuth2AccessToken loginUser(Profile userProfile) {
+    public OAuth2AccessToken loginUser(UserProfile userProfile) {
         Optional<User> user = findByEmail(userProfile.getEmail());
         //Register user if not present
         if (!user.isPresent()) {
-            user = Optional.ofNullable(registerUser(convertToUser(userProfile), Role.USER));
+            user = Optional.of(registerUser(userProfile, Role.USER));
         }
 
         return user
                 .map(CustomUserDetails::new)
-                .map(u -> generateToken(u))
-                .orElseThrow(() ->
-                        new SignInException("Unable to login for user " + userProfile.getEmail()));
+                .map(this::generateAccessToken)
+                .get();
     }
 
-    public User registerUser(User user, Role role) {
+    public User registerUser(UserProfile userProfile, Role role) {
+        User user = User.builder()
+                .id(UUID.randomUUID().toString())
+                .email(userProfile.getEmail())
+                .username(userProfile.getName())
+                .password(generatePassword(8, 16))
+                .build();
+
         log.info("Registering user [{}]", user.getUsername());
 
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -78,42 +82,22 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    private User convertToUser(Profile userProfile) {
-        return User.builder()
-                .id(UUID.randomUUID().toString())
-                .email(userProfile.getEmail())
-                .username(userProfile.getName())
-                .password(generatePassword(8, 16))
-                .build();
-    }
-
-    //TODO : Implement random pwd generation
     private String generatePassword(int minLength, int maxLength) {
         return "to-be-implemented-later";
     }
 
-    private OAuth2AccessToken generateToken(User user) {
+    private OAuth2AccessToken generateAccessToken(User user) {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         Map<String, String> requestParameters = new HashMap<>();
         String clientId = "supershop";
-        boolean approved = true;
-        Set<String> scope = new HashSet<>();
-        scope.add("any");
-        Set<String> resourceIds = new HashSet<>();
-        Set<String> responseTypes = new HashSet<>();
-        responseTypes.add("code");
-        Map<String, Serializable> extensionProperties = new HashMap<>();
-
         OAuth2Request oAuth2Request = new OAuth2Request(requestParameters, clientId,
-                authorities, approved, scope,
-                resourceIds, null, responseTypes, extensionProperties);
-
+                authorities, true, Collections.singleton("any"),
+                null, null, null, null);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, authorities);
         OAuth2Authentication auth = new OAuth2Authentication(oAuth2Request, authenticationToken);
-        OAuth2AccessToken token = tokenServices.createAccessToken(auth);
-        return token;
+        return tokenServices.createAccessToken(auth);
     }
 }

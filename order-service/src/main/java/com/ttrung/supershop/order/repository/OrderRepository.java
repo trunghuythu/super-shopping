@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
  * consent of the copyright owner.
  */
 @Repository
-public interface OrderRepository extends OrderCustomRepository, MongoRepository<Order, String> {
+public interface OrderRepository extends MongoRepository<Order, String> {
 }

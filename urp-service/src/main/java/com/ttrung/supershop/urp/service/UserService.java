@@ -5,16 +5,26 @@ import com.ttrung.supershop.urp.exception.DuplicateEmailException;
 import com.ttrung.supershop.urp.exception.SignInException;
 import com.ttrung.supershop.urp.model.CustomUserDetails;
 import com.ttrung.supershop.urp.model.Role;
+import com.ttrung.supershop.urp.model.User;
 import com.ttrung.supershop.urp.repository.UserRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import com.ttrung.supershop.urp.model.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,14 +32,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private JwtTokenProvider tokenProvider;
+    private DefaultTokenServices tokenServices;
 
-    public String loginUser(Profile userProfile) {
+    public UserService(DefaultTokenServices tokenServices,
+                       UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
+        this.tokenServices = tokenServices;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public OAuth2AccessToken loginUser(Profile userProfile) {
         Optional<User> user = findByEmail(userProfile.getEmail());
         //Register user if not present
         if (!user.isPresent()) {
@@ -38,9 +53,7 @@ public class UserService {
 
         return user
                 .map(CustomUserDetails::new)
-                .map(userDetails -> new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()))
-                .map(tokenProvider::generateToken)
+                .map(u -> generateToken(u))
                 .orElseThrow(() ->
                         new SignInException("Unable to login for user " + userProfile.getEmail()));
     }
@@ -76,5 +89,30 @@ public class UserService {
     //TODO : Implement random pwd generation
     private String generatePassword(int minLength, int maxLength) {
         return "to-be-implemented-later";
+    }
+
+    private OAuth2AccessToken generateToken(User user) {
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        Map<String, String> requestParameters = new HashMap<>();
+        String clientId = "supershop";
+        boolean approved = true;
+        Set<String> scope = new HashSet<>();
+        scope.add("any");
+        Set<String> resourceIds = new HashSet<>();
+        Set<String> responseTypes = new HashSet<>();
+        responseTypes.add("code");
+        Map<String, Serializable> extensionProperties = new HashMap<>();
+
+        OAuth2Request oAuth2Request = new OAuth2Request(requestParameters, clientId,
+                authorities, approved, scope,
+                resourceIds, null, responseTypes, extensionProperties);
+
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, authorities);
+        OAuth2Authentication auth = new OAuth2Authentication(oAuth2Request, authenticationToken);
+        OAuth2AccessToken token = tokenServices.createAccessToken(auth);
+        return token;
     }
 }

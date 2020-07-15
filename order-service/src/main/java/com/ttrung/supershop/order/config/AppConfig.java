@@ -8,6 +8,7 @@ package com.ttrung.supershop.order.config;
 
 import com.ttrung.supershop.product.client.ProductService;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,11 +19,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Configuration
 public class AppConfig {
 
+    @Value("${PRODUCT_SERVICE_BASE_URL}")
+    private String productServiceBaseUrl;
+
     @Bean
     public ProductService productClientService() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8125/")
+                .baseUrl(productServiceBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

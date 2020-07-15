@@ -20,8 +20,11 @@ spring:
       uri: mongodb://localhost:27017/SuperShopping?readPreference=primary&w=majority&journal=true&connectTimeoutMS=10000
 
 security:
-  jwt:
-    header: Authorization
-    prefix: Bearer
-    expiration: 86400
-    secret: JwtSecretKey
+  oauth2:
+    client:
+      client-id: supershop
+      client-secret: supershop
+      grant-type: client_credentials
+      authorized-grant-types: client_credentials
+      scope: any
+      access-token-validity-seconds: 360

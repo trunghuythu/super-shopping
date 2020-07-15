@@ -22,6 +22,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <version>2.1.6.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
@@ -97,6 +102,7 @@
         <module>order-service</module>
         <module>product-service</module>
         <module>urp-service</module>
+<!--        <module>api-gateway</module>-->
     </modules>
 
 </project>

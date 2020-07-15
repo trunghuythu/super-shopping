@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,7 +80,7 @@ public class UserService {
 
     private User convertToUser(Profile userProfile) {
         return User.builder()
-                .id(userProfile.getId())
+                .id(UUID.randomUUID().toString())
                 .email(userProfile.getEmail())
                 .username(userProfile.getName())
                 .password(generatePassword(8, 16))

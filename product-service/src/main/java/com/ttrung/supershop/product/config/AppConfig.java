@@ -31,16 +31,9 @@ public class AppConfig extends ResourceServerConfigurerAdapter {
 
     @Bean
     @Primary
-    public CustomTokenService tokenService(RestTemplate restTemplate) {
-        CustomTokenService tokenService = new CustomTokenService();
-        tokenService.setTokenCheckUri(tokenCheckEndpoint);
-        tokenService.setRestTemplate(restTemplate);
+    public CustomTokenService tokenService() {
+        CustomTokenService tokenService = new CustomTokenService(tokenCheckEndpoint);
         return tokenService;
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplateBuilder().build();
     }
 
     @Override

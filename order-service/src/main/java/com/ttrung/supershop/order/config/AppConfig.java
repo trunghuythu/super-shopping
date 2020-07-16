@@ -10,7 +10,6 @@ import com.ttrung.supershop.order.util.CustomTokenService;
 import com.ttrung.supershop.product.client.ProductService;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -46,15 +45,8 @@ public class AppConfig {
 
     @Bean
     @Primary
-    public CustomTokenService tokenService(RestTemplate restTemplate) {
-        CustomTokenService tokenService = new CustomTokenService();
-        tokenService.setTokenCheckUri(tokenCheckEndpoint);
-        tokenService.setRestTemplate(restTemplate);
+    public CustomTokenService tokenService() {
+        CustomTokenService tokenService = new CustomTokenService(tokenCheckEndpoint);
         return tokenService;
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplateBuilder().build();
     }
 }

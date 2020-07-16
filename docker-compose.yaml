@@ -31,7 +31,7 @@ services:
     depends_on:
       - mongo-db
   mongo-db:
-    image: mongo:4.2
+    image: mongo:3.6
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null

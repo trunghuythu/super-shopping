@@ -30,22 +30,13 @@ public class CustomTokenService extends RemoteTokenServices {
 
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken) throws AuthenticationException, InvalidTokenException {
-        Map<String, Object> map = checkToken(tokenCheckUri, accessToken);
-
-        if (map.containsKey("error")) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("check_token returned error: " + map.get("error"));
-            }
+        try {
+            Map<String, Object> map = checkToken(tokenCheckUri, accessToken);
+            return tokenConverter.extractAuthentication(map);
+        } catch (Exception e) {
             throw new InvalidTokenException(accessToken);
         }
 
-        // gh-838
-        if (map.containsKey("active") && !"true".equals(String.valueOf(map.get("active")))) {
-            logger.debug("check_token returned active attribute: " + map.get("active"));
-            throw new InvalidTokenException(accessToken);
-        }
-
-        return tokenConverter.extractAuthentication(map);
     }
 
     private Map<String, Object> checkToken(String tokenCheckUri, String accessToken) {

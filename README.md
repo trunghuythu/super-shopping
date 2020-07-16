@@ -17,9 +17,9 @@ By default,our reverse proxy runs on port 8888 (you can configure the port in do
 1. Products API:
     * Get Products
         * Endpoint: /products
-        * curl -X GET \
-        'http://localhost:8888/products?$filter=sam&$sort=name,asc&$page=1&$size=2' \
-        -H 'Authorization: Bearer access-token'
+        * ```curl -X GET \
+             'http://localhost:8888/products?$filter=sam&$sort=name,asc&$page=1&$size=10' \
+             -H 'Authorization: Bearer access-token'
 
 2. Shopping Cart API:
     * Get Cart:
@@ -60,7 +60,7 @@ By default,our reverse proxy runs on port 8888 (you can configure the port in do
           }'
 
 ## Limitation & Road-map
-	. Requests should be authenticated at the gateway, and enriched with authentication details (id, email, role) before they get to backing services. Once a request get to our services, there should be enough information about the principal who makes the request, without the services go asking for authenticatio ndetails. Also, this helps to bypass authentication in internal process communication between internal services.
+	. Requests should be authenticated at the gateway, and enriched with authentication details (id, email, role) before they get to backing services. Once a request get to our services, there should be enough information about the principal who makes the request, without the services go asking for authentication details. Also, this helps to bypass authentication in internal process communication between internal services and facilitate testing on individual services.
 	. Implement consistent error handling model:
 		. Support i18n
 		. Generate error ID to help tracking issues.

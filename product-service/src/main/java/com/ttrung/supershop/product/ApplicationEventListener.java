@@ -32,6 +32,7 @@ public class ApplicationEventListener {
         Product yogurt = Product.builder()
                 .id("57f7d3e0-f114-4a96-89fd-8084f35c9731")
                 .name("Strawberry Yogurt")
+                .category("Food")
                 .brand("Vinamilk")
                 .price(5000d)
                 .build();
@@ -39,6 +40,7 @@ public class ApplicationEventListener {
 
         Product milk = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-04d112403332")
+                .category("Food")
                 .name("Dense milk")
                 .brand("Vinamilk")
                 .price(20000d)
@@ -47,6 +49,7 @@ public class ApplicationEventListener {
 
         Product xiaoMiNote5 = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-04d112402d32")
+                .category("Digital Devices")
                 .name("Xiaomi Note 5")
                 .brand("Xiaomi")
                 .price(2000000d)
@@ -55,6 +58,7 @@ public class ApplicationEventListener {
 
         Product xiaomiVisionX = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-03k112403332")
+                .category("Digital Devices")
                 .name("Xiaomi Vision X")
                 .brand("Xiaomi")
                 .price(3000000d)
@@ -63,6 +67,7 @@ public class ApplicationEventListener {
 
         Product samsungNote8 = Product.builder()
                 .id("46bd8950-7494-4ed7-861c-04d112403332")
+                .category("Digital Devices")
                 .name("Samsung Note 9")
                 .brand("Samsung")
                 .price(20000000d)
@@ -71,6 +76,7 @@ public class ApplicationEventListener {
 
         Product samsungGalaxy = Product.builder()
                 .id("3ebd8950-7494-4ed7-726d-04d112403332")
+                .category("Digital Devices")
                 .name("Samsung Galaxy")
                 .brand("Samsung")
                 .price(28000000d)
@@ -79,6 +85,7 @@ public class ApplicationEventListener {
 
         Product samsungTvUhd = Product.builder()
                 .id("3kjs8950-7494-4ed7-861c-04d112403332")
+                .category("Digital Devices")
                 .name("Samsung TV Uhd")
                 .brand("Samsung")
                 .price(10000000d)
@@ -87,6 +94,7 @@ public class ApplicationEventListener {
 
         Product samsungTv4k = Product.builder()
                 .id("3ebd8950-7494-4ed7-861c-26k112293332")
+                .category("Digital Devices")
                 .name("Samsung TV 4k")
                 .brand("Samsung")
                 .price(15000000d)

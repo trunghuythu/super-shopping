@@ -6,6 +6,8 @@ Go to the root directory of the project
 1. mvn clean package
 2. docker-compose up
 
+On application startup, we already insert sample products, so you should be able to consume the API with minimum effort.
+
 ## Sign-in and get Access Token
 Open your browser and access http://localhost:8127/signin, which will redirect you to Facebook login page. After you complete Facebook login, the system will create a corresponding user, and return an access token, used to access our protected APIs.
 
@@ -15,7 +17,7 @@ By default,our reverse proxy runs on port 8888 (you can configure the port in do
 1. Products API:
     * Get Products
         * Endpoint: /products
-        * ```curl -X GET \
+        * curl -X GET \
         'http://localhost:8888/products?$filter=sam&$sort=name,asc&$page=1&$size=2' \
         -H 'Authorization: Bearer access-token'
 

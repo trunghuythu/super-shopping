@@ -3,7 +3,6 @@ package com.ttrung.supershop.urp.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
 import java.util.Collections;
 import java.util.Set;
 
@@ -25,8 +24,6 @@ public class User {
         this.username = user.username;
         this.password = user.password;
         this.email = user.email;
-        this.createdAt = user.getCreatedAt();
-        this.updatedAt = user.getUpdatedAt();
         this.active = user.active;
         this.roles = user.roles;
     }
@@ -44,9 +41,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-
-    private Instant createdAt;
-    private Instant updatedAt;
 
     private boolean active;
     private Set<Role> roles;

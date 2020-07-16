@@ -9,7 +9,6 @@ package com.ttrung.supershop.product.controller;
 import com.ttrung.supershop.product.dto.PriceCalculationResult;
 import com.ttrung.supershop.product.dto.ProductDto;
 import com.ttrung.supershop.product.dto.ProductOrderDto;
-import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +61,8 @@ public class ProductController {
     //TODO: @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/v1/products/{productId}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable String productId, @Valid @RequestBody ProductDto productForm) {
-        try {
-            ProductDto createdProduct = productService.updateProduct(productId, productForm);
-            return ResponseEntity.ok(createdProduct);
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        ProductDto createdProduct = productService.updateProduct(productId, productForm);
+        return ResponseEntity.ok(createdProduct);
     }
 
     @PostMapping("/v1/products/price-calculation")

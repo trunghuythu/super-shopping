@@ -6,6 +6,7 @@
  */
 package com.ttrung.supershop.product.service;
 
+import com.ttrung.supershop.product.annotation.RecordProductSearch;
 import com.ttrung.supershop.product.domain.Product;
 import com.ttrung.supershop.product.dto.PriceCalculationResult;
 import com.ttrung.supershop.product.dto.ProductDto;
@@ -14,7 +15,6 @@ import com.ttrung.supershop.product.exception.ProductNotFoundException;
 import com.ttrung.supershop.product.mapper.ProductMapper;
 import com.ttrung.supershop.product.repository.ProductRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -63,6 +63,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @RecordProductSearch
     public Page<ProductDto> getProducts(String searchTerm, String sort, int page, int size) {
         String[] sortSpec = sort.split(",");
         String sortBy = sortSpec[0].trim();

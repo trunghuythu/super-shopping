@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,12 +29,13 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/v1/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/v1/products")
+    @GetMapping
     public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam("$filter") String filter,
                                                         @RequestParam("$sort") String sort,
                                                         @RequestParam("$page") int page,
@@ -43,7 +45,7 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/v1/products/{productId}")
+    @GetMapping("/{productId}")
     public ResponseEntity<ProductDto> getProduct(@PathVariable String productId) {
         Optional<ProductDto> product = productService.getProductById(productId);
 
@@ -52,20 +54,20 @@ public class ProductController {
     }
 
     //TODO: @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/v1/products")
+    @PostMapping
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productForm) {
         ProductDto createdProduct = productService.createProduct(productForm);
         return ResponseEntity.ok(createdProduct);
     }
 
     //TODO: @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/v1/products/{productId}")
+    @PutMapping("/{productId}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable String productId, @Valid @RequestBody ProductDto productForm) {
         ProductDto createdProduct = productService.updateProduct(productId, productForm);
         return ResponseEntity.ok(createdProduct);
     }
 
-    @PostMapping("/v1/products/price-calculation")
+    @PostMapping("/price-calculation")
     public ResponseEntity<PriceCalculationResult> calculateTotalPrice(@RequestBody Collection<ProductOrderDto> productOrders) {
         return ResponseEntity.ok(productService.calculateTotalPrice(productOrders));
     }

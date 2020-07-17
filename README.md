@@ -4,7 +4,7 @@ A sample shopping application built on top of Spring Boot, Spring Web, Spring OA
 ## Infrastructure Overview
 The application is built around 3 microservices:
 1. urp-service: Responsible for user sign-in process, as well as authentication and authorization.
-2. product-service: Manage products
+2. product-service: Manage products, support auditing
 3. order-service: Manage user's shopping carts and orders
 
 You can see the corresponding Maven modules of the services in the project.
@@ -16,7 +16,6 @@ The system uses OpenID Connect on top of OAuth2 for authentication and authoriza
 
 Below diagram shows the flow of user requesting protected resources on our backing services(product service and order service in this case)
 ![image info](./Requesting-Resource-Diagram.png)
-
 
 
 ## Entity Relationship Diagram
@@ -115,6 +114,16 @@ By default,our reverse proxy runs on port 8888 (you can configure the port in do
               "deliveryAddress": "38 Huynh Lan Khanh"
           }'
           ```
+4. Product Audit API;
+    * Get Changes Audit:
+        * Endpoint: /products/audit
+        * ```
+          curl -X GET \
+            http://localhost:8888/products/audit \
+            -H 'Authorization: Bearer access-token' \
+            -H 'Content-Type: application/json'
+          ```
+
 
 ## Limitation & Road-map
 	1. Requests should be authenticated at the gateway, and enriched with authentication details (id, email, role) before they get to backing services.
